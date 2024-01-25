@@ -22,14 +22,12 @@ class KnowledgeNeurons:
         self,
         model: nn.Module,
         tokenizer: PreTrainedTokenizerBase,
-        model_type: str = "bert",
-        device: str = None,
+        model_type: str,
+        device: str,
     ):
         self.model = model
         self.model_type = model_type
-        self.device = device or torch.device(
-            "cuda" if torch.cuda.is_available() else "cpu"
-        )
+        self.device = device
         self.model.to(self.device)
         self.tokenizer = tokenizer
 
@@ -41,6 +39,11 @@ class KnowledgeNeurons:
             self.output_ff_attr = "output.dense.weight"
             self.word_embeddings_attr = "bert.embeddings.word_embeddings.weight"
             self.unk_token = getattr(self.tokenizer, "unk_token_id", None)
+        elif "gpt-j-6B" in model_type:
+            self.transformer_layers_attr = "transformer.h"
+            self.input_ff_attr = "mlp.fc_in"
+            self.output_ff_attr = "mlp.fc_out"
+            self.word_embeddings_attr = "transformer.lm_head"
         elif "gpt" in model_type:
             self.transformer_layers_attr = "transformer.h"
             self.input_ff_attr = "mlp.c_fc"
