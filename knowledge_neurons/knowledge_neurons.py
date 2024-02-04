@@ -452,7 +452,8 @@ class KnowledgeNeurons:
             integrated_grads = []
 
             for i in range(n_sampling_steps):
-                if i > 0 and self.model_type == "gpt":
+                # if i > 0 and self.model_type == "gpt":
+                if i > 0 and  "gpt" in self.model_type:
                     # retokenize new inputs
                     encoded_input, mask_idx, target_label = self._prepare_inputs(
                         prompt, ground_truth
