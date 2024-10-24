@@ -86,7 +86,7 @@ class KnowledgeNeurons:
             mask_idx = -1
         if target is not None:
             if "gpt" in self.model_type:
-                target = self.tokenizer.encode(target)
+                target = self.tokenizer.encode(target, add_special_tokens=False)
             else:
                 target = self.tokenizer.convert_tokens_to_ids(target)
         return encoded_input, mask_idx, target
